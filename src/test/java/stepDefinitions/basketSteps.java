@@ -4,6 +4,7 @@ import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -99,6 +100,11 @@ public class basketSteps {
 
     @When("I create an account without filling out {string}")
     public void iCreateAnAccountWithoutFillingOut(String field) {
+
+        if (!isFieldValid(field)) {
+            return;
+        }
+
         for (String key : fieldNames.keySet()) {
             if (key.equalsIgnoreCase(field)) {
                 continue;
@@ -117,6 +123,10 @@ public class basketSteps {
     @When("I create an account with unmatching data for {string}")
     public void iCreateAnAccountWithUnmatchingDataFor(String field) {
 
+        if (!isFieldValid(field)) {
+            return;
+        }
+
         for (String key : fieldNames.keySet()) {
             if (key.equalsIgnoreCase(field)) {
                 findFieldElement(key).sendKeys(generateUnmatching(key));
@@ -133,6 +143,11 @@ public class basketSteps {
 
     @When("I create an account with the incorrect or empty {string} for {string}")
     public void iCreateAnAccountWithTheIncorrectOrEmptyFor(String value, String field) {
+
+        if (!isFieldValid(field)) {
+            return;
+        }
+
         if (value.equals("empty")) {
             for (String key : fieldNames.keySet()) {
                 if (key.equalsIgnoreCase(field)) {
@@ -236,6 +251,19 @@ public class basketSteps {
     private WebElement waitAndLocate(WebDriver driver, By locator) {
         return new WebDriverWait(driver, Duration.ofSeconds(5)).
                 until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
+    private boolean isFieldValid(String key) {
+        if (key.trim().isEmpty()) {
+            System.out.println("Field cannot be empty, please specify field!");
+            return false;
+        }
+
+        if (!fieldNames.containsKey(key.toLowerCase())) {
+            System.out.println("Cannot find field name: " + key + ". Please check spelling!");
+            return false;
+        }
+        return true;
     }
 
 
