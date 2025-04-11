@@ -22,8 +22,8 @@ Feature: Test of member registration for basketball England
 
   Scenario Outline: Register a member with incorrect data
     Given I use the <browser>
-    And I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
-    When I create an account with the incorrect <value> for <field>
+    Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
+    When I create an account with the incorrect or empty <value> for <field>
     Then I will receive the <message> for <field>
 
     Examples:
