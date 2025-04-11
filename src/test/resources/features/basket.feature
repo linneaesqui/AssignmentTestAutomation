@@ -20,15 +20,28 @@ Feature: Test of member registration for basketball England
     When I create an account with unmatching data for "confirm email address"
     Then I will receive the message "Confirm Email Address does not match" for the field "confirm email address"
 
+
   Scenario Outline: Register a member with incorrect data
+    Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
+    When I create an account with the incorrect or empty <value> for <field>
+    Then I will receive the <message> for <field>
+
+    Examples:
+      | field                   | value           | message                                                                                       |
+      | "first name"            | "!!!"           | "Invalid Value - Allowed characters: A-Z, space and '/\&.-"                                   |
+      | "ethics and conduct"    | "empty"         | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
+      | "confirm email address" | "mail@mail.com" | "Confirm Email Address does not match"                                                        |
+
+
+  Scenario Outline: Run same registration test on different browsers
     Given I use the <browser>
     Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
     When I create an account with the incorrect or empty <value> for <field>
     Then I will receive the <message> for <field>
 
     Examples:
-      | browser      | field                   | value           | message                                                                                       |
-      | "chrome"     | "first name"            | "!!!"           | "Invalid Value - Allowed characters: A-Z, space and '/\&.-"                                   |
-      | "edge"       | "ethics and conduct"    | "empty"         | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
-      | "duckduckgo" | "confirm email address" | "mail@mail.com" | "Confirm Email Address does not match"                                                        |
+      | browser      | field                | value   | message                                                                                       |
+      | "chrome"     | "ethics and conduct" | "empty" | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
+      | "edge"       | "ethics and conduct" | "empty" | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
+      | "duckduckgo" | "ethics and conduct" | "empty" | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
 
