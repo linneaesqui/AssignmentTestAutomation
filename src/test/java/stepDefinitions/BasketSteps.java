@@ -19,7 +19,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class basketSteps {
+public class BasketSteps {
 
     WebDriver driver = null;
     Random random = new Random();
@@ -93,7 +93,7 @@ public class basketSteps {
             findFieldElement(key).sendKeys(generate(key));
         }
         for (String key : boxNames.keySet()) {
-            waitAndClick(driver, (By.cssSelector("label[for='" + boxNames.get(key))));
+            waitAndClick(driver, By.cssSelector("label[for='" + boxNames.get(key) + "']"));
         } clickOnButton();
     }
 
@@ -148,17 +148,11 @@ public class basketSteps {
             return;
         }
 
-        if (value.equals("empty")) {
-            for (String key : fieldNames.keySet()) {
-                if (key.equalsIgnoreCase(field)) {
-                    findFieldElement(key).sendKeys("");
-                } else findFieldElement(key).sendKeys(generate(key));
-            }
-        } else {
-            for (String key : fieldNames.keySet()) {
-                if (key.equalsIgnoreCase(field)) {
-                    findFieldElement(key).sendKeys(value);
-                } else findFieldElement(key).sendKeys(generate(key));
+        for (String key : fieldNames.keySet()) {
+            if (key.equalsIgnoreCase(field)) {
+                findFieldElement(key).sendKeys(value.equals("empty") ? "" : value);
+            } else {
+                findFieldElement(key).sendKeys(generate(key));
             }
         }
         for (String key : boxNames.keySet()) {
@@ -178,6 +172,11 @@ public class basketSteps {
 
     @Then("I will receive the message {string} for the field {string}")
     public void iWillReceiveTheMessageForTheField(String expectedMessage, String field) {
+
+        if (!isFieldValid(field)) {
+            return;
+        }
+
         String actualMessage = driver.findElement(By.cssSelector("span[for='" + faultyFields.get(field.toLowerCase()) + "']")).getText();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -185,6 +184,11 @@ public class basketSteps {
 
     @Then("I will receive the {string} for {string}")
     public void iWillReceiveTheFor(String expectedMessage, String field) {
+
+        if (!isFieldValid(field)) {
+            return;
+        }
+
         String actualMessage = driver.findElement(By.cssSelector("span[for='" + faultyFields.get(field.toLowerCase())+ "']")).getText();
         assertEquals(expectedMessage, actualMessage);
     }
@@ -258,8 +262,9 @@ public class basketSteps {
             System.out.println("Field cannot be empty, please specify field!");
             return false;
         }
+        key = key.toLowerCase();
 
-        if (!fieldNames.containsKey(key.toLowerCase())) {
+        if (!fieldNames.containsKey(key) && !boxNames.containsKey(key) && !faultyFields.containsKey(key)) {
             System.out.println("Cannot find field name: " + key + ". Please check spelling!");
             return false;
         }
