@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -57,6 +58,7 @@ public class UserRegistrationSteps {
 
     @Given("I use the {string}")
     public void iUseThe(String browser) {
+
         switch (browser.toLowerCase()) {
             case "chrome" :
                 driver = new ChromeDriver();
@@ -67,8 +69,12 @@ public class UserRegistrationSteps {
             case "firefox" :
                 driver = new FirefoxDriver();
                 break;
+            case "safari" :
+                driver = new SafariDriver();
+                break;
             default:
-                System.out.println("Browser :" + browser + " is not supported!");
+                System.out.println("Browser not supported! Test is run in chrome");
+                driver = new ChromeDriver();
         }
     }
 
