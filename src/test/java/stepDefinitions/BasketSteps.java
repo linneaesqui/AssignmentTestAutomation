@@ -1,6 +1,5 @@
 package stepDefinitions;
 
-import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -69,8 +68,7 @@ public class BasketSteps {
                 driver = new FirefoxDriver();
                 break;
             default:
-                System.out.println("Browser not supported! Test is run in chrome");
-                driver = new ChromeDriver();
+                System.out.println("Browser not supported!");
         }
     }
 
@@ -166,7 +164,12 @@ public class BasketSteps {
 
     @Then("I will receive the message {string}")
     public void iWillReceiveTheMessage(String expectedMessage) {
-        assertEquals(expectedMessage, waitAndLocate(driver, By.cssSelector("h2.bold.gray")).getText());
+        String actualMessage = waitAndLocate(driver, By.cssSelector("h2.bold.gray")).getText();
+        assertEquals(expectedMessage, actualMessage);
+
+        if (expectedMessage.equals(actualMessage)) {
+            driver.quit();
+        }
     }
 
 
@@ -179,6 +182,10 @@ public class BasketSteps {
 
         String actualMessage = driver.findElement(By.cssSelector("span[for='" + faultyFields.get(field.toLowerCase()) + "']")).getText();
         assertEquals(expectedMessage, actualMessage);
+
+        if (expectedMessage.equals(actualMessage)) {
+            driver.quit();
+        }
     }
 
 
@@ -191,6 +198,10 @@ public class BasketSteps {
 
         String actualMessage = driver.findElement(By.cssSelector("span[for='" + faultyFields.get(field.toLowerCase())+ "']")).getText();
         assertEquals(expectedMessage, actualMessage);
+
+        if (expectedMessage.equals(actualMessage)) {
+            driver.quit();
+        }
     }
 
 
@@ -269,13 +280,5 @@ public class BasketSteps {
             return false;
         }
         return true;
-    }
-
-
-    @After
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
     }
 }
