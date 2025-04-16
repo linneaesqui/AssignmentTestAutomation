@@ -68,7 +68,7 @@ public class BasketSteps {
                 driver = new FirefoxDriver();
                 break;
             default:
-                System.out.println("Browser not supported!");
+                System.out.println("Browser :" + browser + " is not supported!");
         }
     }
 
@@ -93,49 +93,6 @@ public class BasketSteps {
         for (String key : boxNames.keySet()) {
             waitAndClick(driver, By.cssSelector("label[for='" + boxNames.get(key) + "']"));
         } clickOnButton();
-    }
-
-
-    @When("I create an account without filling out {string}")
-    public void iCreateAnAccountWithoutFillingOut(String field) {
-
-        if (!isFieldValid(field)) {
-            return;
-        }
-
-        for (String key : fieldNames.keySet()) {
-            if (key.equalsIgnoreCase(field)) {
-                continue;
-            }
-            findFieldElement(key).sendKeys(generate(key));
-        }
-        for (String key : boxNames.keySet()) {
-            if (key.equalsIgnoreCase(field)) {
-                continue;
-            }
-            waitAndClick(driver, By.cssSelector("label[for='" + boxNames.get(key) + "']"));
-        } clickOnButton();
-    }
-
-
-    @When("I create an account with unmatching data for {string}")
-    public void iCreateAnAccountWithUnmatchingDataFor(String field) {
-
-        if (!isFieldValid(field)) {
-            return;
-        }
-
-        for (String key : fieldNames.keySet()) {
-            if (key.equalsIgnoreCase(field)) {
-                findFieldElement(key).sendKeys(generateUnmatching(key));
-                continue;
-            }
-            findFieldElement(key).sendKeys(generate(key));
-        }
-        for (String key : boxNames.keySet()) {
-            waitAndClick(driver, By.cssSelector("label[for='" + boxNames.get(key) + "']"));
-        }
-        clickOnButton();
     }
 
 
@@ -172,21 +129,6 @@ public class BasketSteps {
         }
     }
 
-
-    @Then("I will receive the message {string} for the field {string}")
-    public void iWillReceiveTheMessageForTheField(String expectedMessage, String field) {
-
-        if (!isFieldValid(field)) {
-            return;
-        }
-
-        String actualMessage = driver.findElement(By.cssSelector("span[for='" + faultyFields.get(field.toLowerCase()) + "']")).getText();
-        assertEquals(expectedMessage, actualMessage);
-
-        if (expectedMessage.equals(actualMessage)) {
-            driver.quit();
-        }
-    }
 
 
     @Then("I will receive the {string} for {string}")

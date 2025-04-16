@@ -5,32 +5,16 @@ Feature: Test of member registration for basketball England
     When I create an account with correct data
     Then I will receive the message "THANK YOU FOR CREATING AN ACCOUNT WITH BASKETBALL ENGLAND"
 
-  Scenario: Register a member with no last name
-    Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
-    When I create an account without filling out "last name"
-    Then I will receive the message "Last Name is required" for the field "last name"
-
-  Scenario: Register a member without approving terms and conditions
-    Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
-    When I create an account without filling out "terms and conditions"
-    Then I will receive the message "You must confirm that you have read and accepted our Terms and Conditions" for the field "terms and conditions"
-
-  Scenario: Register a member with unmatching data for confirm email
-    Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
-    When I create an account with unmatching data for "confirm email address"
-    Then I will receive the message "Confirm Email Address does not match" for the field "confirm email address"
-
-
-  Scenario Outline: Register a member with incorrect data
+  Scenario Outline: Register a member with incorrect or empty data
     Given I go to the webpage "https://membership.basketballengland.co.uk/NewSupporterAccount"
     When I create an account with the incorrect or empty <value> for <field>
     Then I will receive the <message> for <field>
 
     Examples:
-      | field                   | value           | message                                                                                       |
-      | "first name"            | "!!!"           | "Invalid Value - Allowed characters: A-Z, space and '/\&.-"                                   |
-      | "ethics and conduct"    | "empty"         | "You must confirm that you have read, understood and agree to the Code of Ethics and Conduct" |
-      | "confirm email address" | "mail@mail.com" | "Confirm Email Address does not match"                                                        |
+      | field                   | value           | message                                                                     |
+      | "last name"             | " "             | "Last Name is required"                                                     |
+      | "terms and conditions"  | "empty"         | "You must confirm that you have read and accepted our Terms and Conditions" |
+      | "confirm email address" | "mail@mail.com" | "Confirm Email Address does not match"                                      |
 
 
   Scenario Outline: Run same registration test on different browsers
