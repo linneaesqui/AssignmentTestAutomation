@@ -18,7 +18,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class BasketSteps {
+public class UserRegistrationSteps {
 
     WebDriver driver = null;
     Random random = new Random();
@@ -182,17 +182,6 @@ public class BasketSteps {
             case "retype your password":
                 return password;
         } return "Invalid field name!";
-    }
-
-    //I och med min Scenario Outline så är denna metod egentligen onödig. Jag ville behålla den för att visa min
-    //process bättre. För geterateIncorrect, tyckte jag att det faktiskt blev bättre med en Scenario Outline, eftersom
-    //då får man själv skriva in exakt vad man vill testa för felaktig data.
-    private String generateUnmatching(String field) {
-        return switch (field) {
-            case "confirm email address" -> "random@mail.com";
-            case "retype your password" -> "faultyRepeatPassword";
-            default -> "Invalid field name";
-        };
     }
 
     private void clickOnButton() {
